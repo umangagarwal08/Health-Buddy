@@ -6,7 +6,8 @@ load_dotenv()
 from propmpt import genai_response
 
 # Set up the Gemini API Key
-genai.configure(api_key='AIzaSyC8550xiHFPK3IVdYSL80HMiDUp6y16zc0')
+
+genai.configure(api_key=os.getenv("GOOGLE-API-KEY"))
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Streamlit Page
@@ -14,7 +15,7 @@ st.header("👨‍⚕️Health :blue[Buddy]", divider="green")
 
 age=st.text_input("Enter you Age")
 height= st.text_input("Enter your Height in cms")
-Weight = st.text_input('Enter your Weight in Kgs')
+Weight = st.text_input('Enter your weight in Kgs')
 lifestyle=st.selectbox("Lifestyle" ,["Select Any","Sedentary","Active","Moderately"])
 Diabetes=st.selectbox('Diabetes Stage',['Select Any','No Diabetes','Type I','Type II','Type III'],key='Select any')
 bp = st.selectbox("Blood Pressure",['Select Any','Yes','No'],key='Select Any')
@@ -25,8 +26,6 @@ sumbit_button = st.button("Submit")
 if sumbit_button and input != "" and age != "" and height != "" and Diabetes != "" and bp != "" and Weight != "" and lifestyle != "" and dietery != "":
     text=genai_response(input,age,Weight,lifestyle,height,Diabetes,bp,dietery)
     st.markdown(text)
-else:
-    st.markdown("Enter all the details")
 
 
 # Disclaimer
