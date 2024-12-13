@@ -1,64 +1,38 @@
 import streamlit as st
-##import langchain 
 import google.generativeai as genai
 import os
-import pandas as pd
 from dotenv import load_dotenv
 load_dotenv()
+from propmpt import genai_response
 
-
-# Set up the Gemini API Key 
-genai.configure(api_key=os.getenv('GOOGLE-API-KEY'))
+# Set up the Gemini API Key
+genai.configure(api_key='AIzaSyC8550xiHFPK3IVdYSL80HMiDUp6y16zc0')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Streamlit Page
+st.header("👨‍⚕️Health :blue[Buddy]", divider="green")
 
-st.header("👨‍⚕️Health :blue[Buddy]",divider="green")
-input = st.text_input("Hi, I am your 💊medical Expert. Ask me anything")
-submit=st.button("Submit")
+age=st.text_input("Enter you Age in Kgs")
+height= st.text_input("Enter your Height")
+Weight = st.text_input('Enter your weight')
+lifestyle=st.selectbox("Lifestyle" ,["Select Any","Sedentary","Active","Moderately"])
+Diabetes=st.selectbox('Diabetes Stage',['Select Any','No Diabetes','Type I','Type II','Type III'],key='Select any')
+bp = st.selectbox("Blood Pressure",['Select Any','Yes','No'],key='Select Any')
+dietery=st.selectbox("Dietary Preferences", ['Vegetarian',"Non-vegetarian"])
 
-
-st.sidebar.subheader("BMI Calculator✍️")
-weight=st.sidebar.text_input("Weight(in Kgs):")
-height=st.sidebar.text_input("Height (in cms)")
-calculate=st.sidebar.button("Calculate")
-weight=pd.to_numeric(weight)
-height=pd.to_numeric(height)
-bmi=weight/(height/100)**2
-
-
-notes=f""" The BMI Value can be interpreted as:
-* Under Weight: BMI<18.5
-* Normal Weight: BMI 18.5-24.9
-* Over Weight : BMI 25 - 29.9
-* Obesity : BMI>30
-"""
-
-if calculate:
-    st.sidebar.markdown("The BMI is")
-    st.sidebar.write(bmi)
-    st.sidebar.write(notes)
-
-# Generative AI Application 
-
-def genai_response(text):
-    model= genai.GenerativeModel('gemini-pro')
-    if text != "":
-        response = model.generate_content(text)
-    else:
-        st.write("Please Enter Prompt")
-
-    return(response.text)
-
-if submit:
-    response=genai_response(input)
-    st.subheader("The :orange[Response] is : ")
-    st.write(response)
+input = st.text_input("Hi, I am your 💊Health Expert. Ask me anything")
+sumbit_button = st.button("Submit")
+if sumbit_button and input != "" and age != "" and height != "" and Diabetes != "" and bp != "" and Weight != "" and lifestyle != "" and dietery != "":
+    text=genai_response(input,age,Weight,lifestyle,height,Diabetes,bp,dietery)
+    st.markdown(text)
+else:
+    st.markdown("Enter all the details")
 
 
-
-st.subheader("Disclaimer",divider=True)
-notes = f'''
-1. This is an advisor providing guidance and should not be construced as medical advice 
-2. Before taking any action, It is be recommended to consult a Doctor.'''
-
+# Disclaimer
+st.subheader("Disclaimer", divider=True)
+notes = '''
+1. This is an advisor providing guidance and should not be construed as medical advice.
+2. Before taking any action, it is recommended to consult a Doctor.
+'''
 st.markdown(notes)
