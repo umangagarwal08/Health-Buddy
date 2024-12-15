@@ -14,7 +14,7 @@ model= genai.GenerativeModel('gemini-1.5-flash')
 
 
 
-def genai_response(input,age,Weight,lifestyle,height,Diabetes,bp,Dietery):
+def genai_response(input,age,Weight,lifestyle,height,Diabetes,bp,Dietery,gender):
     prompt=f'''You are a highly knowledgeable health advisor specializing in creating personalized wellness plans. Your expertise includes Indian diets, yoga practices, exercises, and natural remedies tailored to individual health profiles. Provide a comprehensive health plan for the user based on the following details:
 
 Age: {age}
@@ -24,6 +24,7 @@ Blood Pressure: {bp}
 Diabetes Type: {Diabetes}
 Lifestyle: {lifestyle}
 Dietary Preferences: {Dietery}
+Gender {gender}
 Your response should include and based on this question {input} and the things has to be in detail for this question:
 
 Diet Plan: Culturally appropriate meal suggestions with timings, emphasizing whole foods and traditional Indian ingredients.
